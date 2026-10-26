@@ -1,7 +1,6 @@
+import app from "./app";
 import config from "./config";
-import express, { type Express } from "express";
 
-const app: Express = express();
 async function startServer() {
 	try {
 		// await prisma.$connect();
