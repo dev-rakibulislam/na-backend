@@ -9,6 +9,7 @@ const envSchema = z.object({
 	PORT: z.coerce.number().default(5000),
 	CLIENT_URL: z.string().default("http://localhost:3000"),
 	DATABASE_URL: z.string().min(1),
+	DIRECT_URL: z.string().min(1),
 	JWT_ACCESS_SECRET: z.string().min(8),
 	JWT_ACCESS_EXPIRES_IN: z.string().default("7d"),
 	GOOGL_CLIENT_ID: z.string(),
