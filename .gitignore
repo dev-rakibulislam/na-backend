@@ -1,0 +1,17 @@
+generated
+node_modules/
+
+.env
+.env.local
+*.env
+
+dist/
+build/
+
+logs
+*.log
+
+.vscode/
+scripts
+
+# .vercel
