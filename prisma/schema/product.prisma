@@ -18,4 +18,5 @@ model Product {
   brand    Brand?   @relation(fields: [brandId], references: [id])
 
   @@map("products")
+  wishlistItems WishlistItem[]
 }
