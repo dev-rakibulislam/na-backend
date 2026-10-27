@@ -1,69 +1,67 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response } from "express";
+import { catchAsync } from "../../core/utils/catchAsync";
+import { categoryService } from "./category.service";
 
-const createCategory = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    // TODO
-  } catch (error) {
-    next(error);
-  }
-};
+const createCategory = catchAsync(async (req: Request, res: Response) => {
+	const data = await categoryService.createCategory(req.body);
 
-const getCategorys = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    // TODO
-  } catch (error) {
-    next(error);
-  }
-};
+	res.status(201).json({
+		success: true,
+		message: "Category created successfully",
+		data,
+	});
+});
 
-const getCategory = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    // TODO
-  } catch (error) {
-    next(error);
-  }
-};
+const getCategories = catchAsync(async (req: Request, res: Response) => {
+	const data = await categoryService.getCategories();
 
-const updateCategory = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    // TODO
-  } catch (error) {
-    next(error);
-  }
-};
+	res.status(200).json({
+		success: true,
+		message: "Categories retrieved successfully",
+		data,
+	});
+});
 
-const deleteCategory = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    // TODO
-  } catch (error) {
-    next(error);
-  }
-};
+const getCategory = catchAsync(async (req: Request, res: Response) => {
+	const { id } = req.params;
+
+	const data = await categoryService.getCategory(id as string);
+
+	res.status(200).json({
+		success: true,
+		message: "Category retrieved successfully",
+		data,
+	});
+});
+
+const updateCategory = catchAsync(async (req: Request, res: Response) => {
+	const { id } = req.params;
+
+	const data = await categoryService.updateCategory(id as string, req.body);
+
+	res.status(200).json({
+		success: true,
+		message: "Category updated successfully",
+		data,
+	});
+});
+
+const deleteCategory = catchAsync(async (req: Request, res: Response) => {
+	const { id } = req.params;
+
+	const data = await categoryService.deleteCategory(id as string);
+
+	res.status(200).json({
+		success: true,
+		message: "Category deleted successfully",
+		data,
+	});
+});
 
 export const categoryController = {
-  createCategory,
-  getCategorys,
-  getCategory,
-  updateCategory,
-  deleteCategory,
+	createCategory,
+	getCategories,
+	getCategory,
+	updateCategory,
+	deleteCategory,
 };

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, } from "express";
 import { catchAsync } from "../../core/utils/catchAsync";
 import { productService } from "./product.service";
 
@@ -12,7 +12,7 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
-const getProducts = catchAsync(async (req: Request, res: Response) => {
+const getProducts = catchAsync(async (_: Request, res: Response) => {
 	const data = await productService.getProducts();
 
 	res.status(200).json({

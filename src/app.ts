@@ -4,6 +4,7 @@ import globalErrorHandler from "./core/errors/globalErrorHandler";
 import AppError from "./core/errors/appError";
 import { authenticationRouter } from "./modules/authentication/authentication.route";
 import { productRouter } from "./modules/product/product.route";
+import { categoryRouter } from "./modules/category/category.route";
 
 const app: Express = express();
 
@@ -33,6 +34,7 @@ app.get("/", (_, res) => {
 
 app.use("/api/v1/auth", authenticationRouter);
 app.use("/api/v1/product", productRouter);
+app.use("/api/v1/category", categoryRouter);
 
 app.use((req, _, next) => {
 	next(
