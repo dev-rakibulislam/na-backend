@@ -4,7 +4,7 @@ model User {
   email           String    @unique
   phone           String?   @unique
   passwordHash    String    @map("password_hash")
-  role            Role      @default(CUSTOMER)
+  role            UserRole  @default(CUSTOMER)
   isActive        Boolean   @default(true) @map("is_active")
   emailVerifiedAt DateTime? @map("email_verified_at")
   lastLoginAt     DateTime? @map("last_login_at")

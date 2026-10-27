@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import type { ISendResponseParams } from "../../types/sendResponse";
+import type { ISendResponseParams } from "../../types/sendResponse.type";
 
 
 export const sendResponse = (

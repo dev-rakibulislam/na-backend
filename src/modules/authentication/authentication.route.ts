@@ -1,8 +1,23 @@
 import { Router } from "express";
+import { validateData } from "../../core/middleware/zodDataValidator.middleware";
 import { authenticationController } from "./authentication.controller";
+import {
+	userLoginSchema,
+	userRegisterSchema,
+} from "./authentication.validation";
 
 const router = Router();
 
-router.post("/", authenticationController.createUserController);
+router.post(
+	"/register",
+	validateData(userRegisterSchema),
+	authenticationController.UserRegisterController,
+);
+
+router.post(
+	"/login",
+	validateData(userLoginSchema),
+	authenticationController.UserLoginController,
+);
 
 export const authenticationRouter = router;

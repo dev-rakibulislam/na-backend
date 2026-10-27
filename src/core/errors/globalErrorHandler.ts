@@ -13,7 +13,6 @@ const globalErrorHandler = (
 	config.NODE_ENV === "development" && console.error("Developer Only:",error);
 
   if (error instanceof AppError) {
-    console.log("AppError:", error);
 			return sendResponse(res, {
 				code: error.statusCode,
 				message: error.message,
