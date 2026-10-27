@@ -3,6 +3,7 @@ import express, { type Express } from "express";
 import globalErrorHandler from "./core/errors/globalErrorHandler";
 import AppError from "./core/errors/appError";
 import { authenticationRouter } from "./modules/authentication/authentication.route";
+import { productRouter } from "./modules/product/product.route";
 
 const app: Express = express();
 
@@ -31,6 +32,7 @@ app.get("/", (_, res) => {
 });
 
 app.use("/api/v1/auth", authenticationRouter);
+app.use("/api/v1/product", productRouter);
 
 app.use((req, _, next) => {
 	next(

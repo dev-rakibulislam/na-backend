@@ -1,0 +1,21 @@
+model Product {
+  id               String        @id @default(uuid())
+  categoryId       String        @map("category_id")
+  brandId          String?       @map("brand_id")
+  name             String
+  slug             String        @unique
+  shortDescription String?       @map("short_description")
+  description      String?
+  status           ProductStatus @default(draft)
+  isFeatured       Boolean       @default(false) @map("is_featured")
+  seoTitle         String?       @map("seo_title")
+  seoDescription   String?       @map("seo_description")
+  ogImageUrl       String?       @map("og_image_url")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  category Category @relation(fields: [categoryId], references: [id])
+  brand    Brand?   @relation(fields: [brandId], references: [id])
+
+  @@map("products")
+}
