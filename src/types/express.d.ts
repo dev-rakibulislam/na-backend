@@ -1,11 +1,12 @@
 import type { UserRole } from "../../generated/prisma/enums";
 
 export interface AuthenticatedUser {
-	userId: string;
-	email: string;
-	role: UserRole;
-	isActive?: boolean;
-}
+		email: string;
+		name: string;
+		role: UserRole;
+		id: string;
+		is_active: never;
+	}
 
 declare global {
 	namespace Express {

@@ -57,60 +57,48 @@ const UserRegisterService = async (payload: UserRegisterPayload) => {
 };
 
 const UserLoginService = async (payload: UserLoginPayload) => {
-	const { email, password } = payload;
-
-	const user = await prisma.user.findUnique({
-		where: { email },
+	const existingUserRecord = await prisma.user.findUnique({
+		where: {
+			email: payload.email,
+		},
 	});
 
-	if (!user) {
-		throw new AppError(404, "User does not exist");
+	if (existingUserRecord === null) {
+		throw new AppError(409, "user not found. Please register");
 	}
+	const { passwordHash: passwordDB } = existingUserRecord;
 
-	if (!user.isActive) {
-		throw new AppError(
-			403,
-			"Your account is deactivated. Please contact support.",
-		);
-	}
+	const isPasswordMatch = await bcrypt.compare(payload.password, passwordDB);
 
-	const isPasswordMatch = await bcrypt.compare(password, user.passwordHash);
 	if (!isPasswordMatch) {
-		throw new AppError(401, "Invalid password credentials");
+		throw new AppError(401, "Invalid credentials");
 	}
 
-	await prisma.user.update({
-		where: { id: user.id },
-		data: { lastLoginAt: new Date() },
-	});
+	const { email, id, isActive, role } =
+		await jwtCookiePayload(existingUserRecord);
 
-	const tokenPayload = await jwtCookiePayload(user);
+	const JwtPayload = { email, id, isActive, role };
 
-	const accessToken = await generateToken(tokenPayload, {
-		secret: config.JWT_ACCESS_SECRET,
+	const accessToken = await generateToken(JwtPayload, {
 		expiresIn: config.JWT_ACCESS_EXPIRES_IN,
+		secret: config.JWT_ACCESS_SECRET,
 	});
 
-	const refreshToken = await generateToken(tokenPayload, {
+	const refreshToken = await generateToken(JwtPayload, {
 		secret: config.JWT_REFRESH_SECRET,
 		expiresIn: config.JWT_REFRESH_EXPIRES_IN,
 	});
 
-	const { passwordHash: _, ...userWithoutPassword } = user;
-
-	return {
-		user: userWithoutPassword,
-		accessToken,
-		refreshToken,
-	};
+	return { accessToken, refreshToken };
 };
 
 const getProfileFromDb = async (payload: AuthenticatedUser) => {
+	console.log("ppaa", payload);
 	const getProfile = await prisma.user.findUnique({
 		where: {
 			...payload,
 		},
-		omit: { passwordHash: true }
+		omit: { passwordHash: true },
 	});
 	return getProfile;
 };

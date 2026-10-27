@@ -1,11 +1,11 @@
 import type { JwtPayload } from "jsonwebtoken";
+import { UserRole } from "../../generated/prisma/enums";
 
 export type TJwtPayload = JwtPayload & {
-	userId: string;
+	id: string;
 	email: string;
-	role: string;
-	isActive?: boolean;
-
+	role: UserRole;
+	isActive: boolean;
 };
 
 export type TJwtData = {

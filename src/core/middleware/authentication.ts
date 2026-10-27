@@ -1,12 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../utils/catchAsync";
-import { sendResponse } from "../utils/response";
-import { config } from "../../config/env";
-import { prisma } from "../../config/prisma";
-import AppError from "../error/appError";
-import { UserRole, UserStatus } from "../../../generated/prisma/enums";
 import { verifyToken } from "../utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
+import { UserRole } from "../../../generated/prisma/enums";
+import { sendResponse } from "../utils/sendResponse";
+import config from "../../config";
+import AppError from "../errors/appError";
+import { prisma } from "../../config/prisma";
 
 const authMiddleware = (...requiredRoles: UserRole[]) => {
 	return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -26,15 +26,15 @@ const authMiddleware = (...requiredRoles: UserRole[]) => {
 
 		const { success, data, error } = verifyToken(
 			token,
-			config.jwt.jwt_access_secret,
+			config.JWT_ACCESS_SECRET,
 		);
 
 		if (!success) {
 			throw new Error(error);
 		}
-		const { userId, email, role, status } = data as JwtPayload;
+		const { id, name, email, role, isActive } = data as JwtPayload;
 
-		if (!userId) {
+		if (!id) {
 			throw new AppError(404, "user Id missing");
 		}
 
@@ -47,14 +47,16 @@ const authMiddleware = (...requiredRoles: UserRole[]) => {
 
 		const authenticatedUser = await prisma.user.findUnique({
 			where: {
-				id: userId,
+				id,
 				email,
+				isActive,
+				role,
 			},
 			select: {
 				id: true,
 				email: true,
 				role: true,
-				status: true,
+				is_active: true,
 				name: true,
 			},
 		});
@@ -66,11 +68,8 @@ const authMiddleware = (...requiredRoles: UserRole[]) => {
 			);
 		}
 
-		if (authenticatedUser.status !== status) {
-			throw new AppError(403, "Account status not Match. Try login again.");
-		}
-		if (authenticatedUser.status === UserStatus.BAN) {
-			throw new AppError(403, "Account is not active. Please contact support.");
+		if (authenticatedUser.is_active !== false) {
+			throw new AppError(403, "Account is not active. Try to active again.");
 		}
 
 		req.user = authenticatedUser;

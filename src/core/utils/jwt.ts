@@ -27,7 +27,7 @@ export async function jwtCookiePayload(
 	result: Pick<User, "id" | "email" | "role" | "isActive">,
 ) {
 	return {
-		userId: result.id,
+		id: result.id,
 		email: result.email,
 		role: result.role,
 		isActive: result.isActive,

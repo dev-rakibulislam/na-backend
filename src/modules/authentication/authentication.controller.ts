@@ -18,7 +18,7 @@ const UserRegisterController = catchAsync(
 );
 
 const UserLoginController = catchAsync(async (req: Request, res: Response) => {
-	const { user, accessToken, refreshToken } =
+	const { accessToken, refreshToken } =
 		await authenticationService.UserLoginService(req.body);
 
 	setCookie(res, "accessToken", accessToken, {
@@ -33,9 +33,7 @@ const UserLoginController = catchAsync(async (req: Request, res: Response) => {
 		code: 200,
 		message: "User login successfully.",
 		data: {
-			user,
-			accessToken,
-			refreshToken,
+	
 		},
 	});
 });
@@ -45,7 +43,7 @@ const getMyProfileController = catchAsync(
 		const data = await authenticationService.getProfileFromDb(req.user);
 		sendResponse(res, {
 			code: 201,
-			message: "User login successfully.",
+			message: "User get successfully.",
 			data,
 		});
 	},
@@ -53,5 +51,6 @@ const getMyProfileController = catchAsync(
 
 export const authenticationController = {
 	UserRegisterController,
-	UserLoginController,getMyProfileController
+	UserLoginController,
+	getMyProfileController,
 };

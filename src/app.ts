@@ -1,4 +1,5 @@
 import express, { type Express } from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import globalErrorHandler from "./core/errors/globalErrorHandler";
 import AppError from "./core/errors/appError";
@@ -10,7 +11,7 @@ import { orderRouter } from "./modules/order/order.route";
 const app: Express = express();
 
 app.use(express.json());
-// app.use(cookieParser());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
