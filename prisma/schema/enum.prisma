@@ -8,3 +8,26 @@ enum ProductStatus {
   active
   archived
 }
+
+enum PaymentMethod {
+  cod
+  sslcommerz
+}
+
+enum PaymentStatus {
+  unpaid
+  pending
+  paid
+  failed
+  refunded
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  processing
+  shipped
+  delivered
+  cancelled
+  returned
+}

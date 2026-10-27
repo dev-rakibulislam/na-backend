@@ -4,6 +4,7 @@ model Product {
   brandId          String?       @map("brand_id")
   name             String
   slug             String        @unique
+  unitPrice        Decimal       @map("unit_price") @db.Decimal(10, 2)
   shortDescription String?       @map("short_description")
   description      String?
   status           ProductStatus @default(draft)
@@ -14,9 +15,10 @@ model Product {
   createdAt        DateTime      @default(now()) @map("created_at")
   updatedAt        DateTime      @updatedAt @map("updated_at")
 
-  category Category @relation(fields: [categoryId], references: [id])
-  brand    Brand?   @relation(fields: [brandId], references: [id])
+  category         Category      @relation(fields: [categoryId], references: [id])
+  brand            Brand?        @relation(fields: [brandId], references: [id])
+  wishlistItems    WishlistItem[]
+  orderItems       OrderItem[]
 
   @@map("products")
-  wishlistItems WishlistItem[]
 }

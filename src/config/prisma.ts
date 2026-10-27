@@ -6,8 +6,14 @@ import config from ".";
 const connectionString = config.DATABASE_URL;
 
 const adapter = new PrismaPg({
-	connectionString
+	connectionString,
 });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient({
+	adapter,
+	transactionOptions: {
+		maxWait: 10000,
+		timeout: 20000,
+	},
+});
 
 export { prisma };

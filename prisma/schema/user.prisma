@@ -15,4 +15,5 @@ model User {
   @@index([email, phone], name: "user_email_phone_index")
   @@map("users")
   wishlists Wishlist[]
+  orders Order[]
 }
