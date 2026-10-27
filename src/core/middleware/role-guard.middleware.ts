@@ -8,7 +8,7 @@ import config from "../../config";
 import AppError from "../errors/appError";
 import { prisma } from "../../config/prisma";
 
-const authMiddleware = (...requiredRoles: UserRole[]) => {
+const roleGuardMiddleware = (...requiredRoles: UserRole[]) => {
 	return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 		const authorizationHeader = req.headers.authorization;
 		const token = authorizationHeader
@@ -78,4 +78,4 @@ const authMiddleware = (...requiredRoles: UserRole[]) => {
 	});
 };
 
-export default authMiddleware;
+export default roleGuardMiddleware;

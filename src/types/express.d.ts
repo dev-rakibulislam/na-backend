@@ -5,7 +5,7 @@ export interface AuthenticatedUser {
 		name: string;
 		role: UserRole;
 		id: string;
-		is_active: never;
+		isActive: boolean;
 	}
 
 declare global {

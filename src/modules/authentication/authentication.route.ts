@@ -5,6 +5,7 @@ import {
 	userLoginSchema,
 	userRegisterSchema,
 } from "./authentication.validation";
+import authGuardMiddleware from "../../core/middleware/auth-guard.middleware";
 
 const router = Router();
 
@@ -20,6 +21,10 @@ router.post(
 	authenticationController.UserLoginController,
 );
 
-router.get("/me", authenticationController.getMyProfileController);
+router.get(
+	"/me",
+	authGuardMiddleware(),
+	authenticationController.getMyProfileController,
+);
 
 export const authenticationRouter = router;
