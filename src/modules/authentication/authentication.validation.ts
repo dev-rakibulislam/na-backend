@@ -1,14 +1,5 @@
-
 import z from "zod";
 import { UserRole } from "../../../generated/prisma/enums";
-
-export const bangladeshPhoneSchema = z
-	.string()
-	.trim()
-	.regex(
-		/^(?:\+8801|8801|01)[3-9]\d{8}$/,
-		"Please provide a valid Bangladesh mobile number",
-	);
 
 export const userLoginSchema = z.object({
 	email: z.email({
@@ -32,10 +23,14 @@ export const userRegisterSchema = userLoginSchema.extend({
 		.min(3, "Name must be at least 3 characters long")
 		.max(255, "Name must be less than 255 characters long"),
 
-	phone: bangladeshPhoneSchema.optional(),
+	phone: z
+		.string()
+		.refine((val) => val === "" || /^(?:\+?880|0)1[3-9]\d{8}$/.test(val), {
+			message: "Please provide valid Bangladeshi number",
+		})
+		.optional(),
 
 	role: z.enum(UserRole).default("CUSTOMER"),
 });
 
 export const technicianProfileUpdateSchema = z.object({});
-

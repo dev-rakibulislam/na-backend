@@ -40,7 +40,18 @@ const UserLoginController = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
+const getMyProfileController = catchAsync(
+	async (req: Request, res: Response) => {
+		const data = await authenticationService.getProfileFromDb(req.user);
+		sendResponse(res, {
+			code: 201,
+			message: "User login successfully.",
+			data,
+		});
+	},
+);
+
 export const authenticationController = {
 	UserRegisterController,
-	UserLoginController,
+	UserLoginController,getMyProfileController
 };

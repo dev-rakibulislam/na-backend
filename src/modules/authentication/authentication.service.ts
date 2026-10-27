@@ -7,6 +7,7 @@ import type {
 	UserLoginPayload,
 	UserRegisterPayload,
 } from "./authentication.interface";
+import { AuthenticatedUser } from "../../types/express";
 
 const UserRegisterService = async (payload: UserRegisterPayload) => {
 	const { name, email, password, phone } = payload;
@@ -67,7 +68,10 @@ const UserLoginService = async (payload: UserLoginPayload) => {
 	}
 
 	if (!user.isActive) {
-		throw new AppError(403, "Your account is deactivated. Please contact support.");
+		throw new AppError(
+			403,
+			"Your account is deactivated. Please contact support.",
+		);
 	}
 
 	const isPasswordMatch = await bcrypt.compare(password, user.passwordHash);
@@ -101,7 +105,18 @@ const UserLoginService = async (payload: UserLoginPayload) => {
 	};
 };
 
+const getProfileFromDb = async (payload: AuthenticatedUser) => {
+	const getProfile = await prisma.user.findUnique({
+		where: {
+			...payload,
+		},
+		omit: { passwordHash: true }
+	});
+	return getProfile;
+};
+
 export const authenticationService = {
 	UserRegisterService,
 	UserLoginService,
+	getProfileFromDb,
 };

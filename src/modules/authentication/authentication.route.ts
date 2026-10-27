@@ -20,4 +20,6 @@ router.post(
 	authenticationController.UserLoginController,
 );
 
+router.get("/me", authenticationController.getMyProfileController);
+
 export const authenticationRouter = router;

@@ -1,5 +1,5 @@
 import express, { type Express } from "express";
-
+import cors from "cors";
 import globalErrorHandler from "./core/errors/globalErrorHandler";
 import AppError from "./core/errors/appError";
 import { authenticationRouter } from "./modules/authentication/authentication.route";
@@ -14,18 +14,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true,
-//   }),
-// );
+const allowedOrigins = ["http://localhost:3000"];
+
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		credentials: true,
+	}),
+);
 
 app.get("/", (_, res) => {
 	res.status(200).send({
