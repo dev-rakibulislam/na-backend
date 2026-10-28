@@ -1,9 +1,10 @@
 {
 	"compilerOptions": {
-		"module": "ESNext",
-		"moduleResolution": "bundler",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
 		"target": "ES2023",
 		"types": ["node"],
+    "outDir":"./dist",
 		"sourceMap": true,
 		"declaration": true,
 		"declarationMap": true,

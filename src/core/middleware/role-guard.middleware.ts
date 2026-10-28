@@ -56,7 +56,7 @@ const roleGuardMiddleware = (...requiredRoles: UserRole[]) => {
 				id: true,
 				email: true,
 				role: true,
-				is_active: true,
+				isActive: true,
 				name: true,
 			},
 		});
@@ -68,7 +68,7 @@ const roleGuardMiddleware = (...requiredRoles: UserRole[]) => {
 			);
 		}
 
-		if (authenticatedUser.is_active !== false) {
+		if (authenticatedUser.isActive !== false) {
 			throw new AppError(403, "Account is not active. Try to active again.");
 		}
 

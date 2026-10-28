@@ -3,7 +3,7 @@ import { catchAsync } from "../../core/utils/catchAsync";
 import { wishlistService } from "./wishlist.service";
 
 const getWishlist = catchAsync(async (req: Request, res: Response) => {
-	const userId = req.user!.userId;
+	const userId = req.user?.id;
 
 	const data = await wishlistService.getWishlist(userId);
 
@@ -15,7 +15,7 @@ const getWishlist = catchAsync(async (req: Request, res: Response) => {
 });
 
 const addWishlistItem = catchAsync(async (req: Request, res: Response) => {
-	const userId = req.user!.userId;
+	const userId = req.user?.id;
 	const { productId } = req.body;
 
 	const data = await wishlistService.addWishlistItem(userId, productId);
@@ -28,7 +28,7 @@ const addWishlistItem = catchAsync(async (req: Request, res: Response) => {
 });
 
 const removeWishlistItem = catchAsync(async (req: Request, res: Response) => {
-	const userId = req.user!.userId;
+	const userId = req.user?.id;
 	const { productId } = req.params;
 
 	const data = await wishlistService.removeWishlistItem(
@@ -44,7 +44,7 @@ const removeWishlistItem = catchAsync(async (req: Request, res: Response) => {
 });
 
 const clearWishlist = catchAsync(async (req: Request, res: Response) => {
-	const userId = req.user!.userId;
+	const userId = req.user?.id;
 
 	const data = await wishlistService.clearWishlist(userId);
 

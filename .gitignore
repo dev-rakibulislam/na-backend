@@ -16,3 +16,5 @@ scripts
 
 # .vercel
 z-plan
+.vercel
+.env*
